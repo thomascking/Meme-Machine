@@ -1,0 +1,60 @@
+<html>
+<body>
+<h1>Perfect 5/7 Memes</h1>
+<script>
+    loadfunctions = [];
+</script>
+{% for meme in memes %}
+<img style="display: none" id="image{{ forloop.counter }}" src="{{ meme.image.url }}" />
+<canvas id="meme{{ forloop.counter }}" width="400" height="300">
+</canvas>
+<a id="download{{ forloop.counter }}" download="meme.png"><button type="button" onClick="download({{ forloop.counter }})">Download</button></a>
+<script>
+loadfunctions.push(function() {
+    var canvas{{ forloop.counter }} = document.getElementById("meme{{ forloop.counter }}");
+    var ctx{{ forloop.counter }} = canvas{{ forloop.counter }}.getContext("2d");
+    ctx{{ forloop.counter }}.fillStyle = "#FFF";
+    ctx{{ forloop.counter }}.strokeStyle = "#000";
+    ctx{{ forloop.counter }}.strokeWidth = 5;
+    ctx{{ forloop.counter }}.font = "bold 30px Arial";
+    ctx{{ forloop.counter }}.textAlign = "center";
+    ctx{{ forloop.counter }}.textBaseline = "top";
+    img{{ forloop.counter }} = document.getElementById("image{{ forloop.counter }}");
+    ctx{{ forloop.counter }}.drawImage(img{{ forloop.counter }}, 0, 0, 400, 300);
+    var topText = "When {{ meme.subject.text|safe }} {{ meme.verb.text|safe }}";
+    var fontSize = 30;
+    while (ctx{{ forloop.counter }}.measureText(topText).width > 400) {
+        fontSize -= 2;
+        ctx{{ forloop.counter }}.font = "bold " + fontSize + "px Arial";
+    }
+    ctx{{ forloop.counter }}.fillText(topText, 200, 0);
+    ctx{{ forloop.counter }}.strokeText(topText, 200, 0);
+    var bottomText = "{{ meme.object.text|safe }} {{ meme.gerund.text|safe }}";
+    var fontSize = 30;
+    ctx{{ forloop.counter }}.font = "bold " + fontSize + "px Arial";
+    while (ctx{{ forloop.counter }}.measureText(bottomText).width > 400) {
+        fontSize -= 2;
+        ctx{{ forloop.counter }}.font = "bold " + fontSize + "px Arial";
+    }
+    ctx{{ forloop.counter }}.textBaseline = "bottom";
+    ctx{{ forloop.counter }}.fillText(bottomText, 200, 290);
+    ctx{{ forloop.counter }}.strokeText(bottomText, 200, 290);
+});
+</script>
+{% endfor %}
+<script>
+function download(id){
+    var download = document.getElementById("download"+id);
+    var image = document.getElementById("meme" + id).toDataURL("image/png")
+                .replace("image/png", "image/octet-stream");
+          download.setAttribute("href", image);
+          //download.setAttribute("download","archive.png");
+}
+    window.onload = function() {
+        for (var i = 0; i < loadfunctions.length; i++) {
+            loadfunctions[i]();
+        }
+    }
+</script>
+</body>
+</html>

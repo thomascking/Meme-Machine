@@ -1,0 +1,44 @@
+body {
+	background-color: tan;
+}
+
+div {
+	
+}
+
+#top {
+	background-color:Navy;
+	width: 2000px;
+	color: white;
+	text-align: center;
+}
+
+#main {
+	background-color:Navy;
+	height: 1000px;
+	width:	2000px;
+	display: flex;
+	justify-content: center;
+	align-content: center;
+}
+
+#rating {
+	height:800px;
+	width:800px;
+	margin:100px;
+	background-color:tan;
+	display: flex;
+	justify-content: center;
+	align-content: center;
+    text-align: center;
+}
+
+#canvas {
+	height:800px;
+	width:800px;
+	margin:100px;
+	background-color:tan;
+	display: flex;
+	justify-content: center;
+	align-content: center;
+}

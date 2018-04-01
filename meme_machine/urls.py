@@ -21,4 +21,5 @@ import text.views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', text.views.create_meme),
+    path('gallery/', text.views.perfect),
 ]

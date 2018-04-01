@@ -1,10 +1,56 @@
 <html>
 <body>
-<p>Subject: {{ subject.text }}</p>
-<p>Verb: {{ verb.text }}</p>
-<p>Object: {{ object.text }}</p>
-<p>Gerund: {{ gerund.text }}</p>
-<p>Image: {{ image.url }}</p>
-<img src="{{ image.url }}" />
+<img style="display: none" id="image" src="{{ image.url }}" />
+<canvas id="meme" width="400" height="300">
+</canvas>
+<form action="" method="post">
+    {% csrf_token %}
+    <input type="hidden" name="subject" value="{{ subject.id }}">
+    <input type="hidden" name="verb" value="{{ verb.id }}">
+    <input type="hidden" name="object" value="{{ object.id }}">
+    <input type="hidden" name="gerund" value="{{ gerund.id }}">
+    <input type="hidden" name="image" value="{{ image.id }}">
+    Rating:1<input type="radio" name="rating" value="1">2<input type="radio" name="rating" value="2">3<input type="radio" name="rating" value="3" selected>4<input type="radio" name="rating" value="4">5<input type="radio" name="rating" value="5">
+    <input type="submit"><a id="download" download="meme.png"><button type="button" onClick="download()">Download</button></a>
+</form>
+<script>
+function download(){
+    var download = document.getElementById("download");
+    var image = document.getElementById("meme").toDataURL("image/png")
+                .replace("image/png", "image/octet-stream");
+          download.setAttribute("href", image);
+          //download.setAttribute("download","archive.png");
+}
+window.onload = function() {
+    var canvas = document.getElementById("meme");
+    var ctx = canvas.getContext("2d");
+    ctx.fillStyle = "#FFF";
+    ctx.strokeStyle = "#000";
+    ctx.strokeWidth = 5;
+    ctx.font = "bold 30px Arial";
+    ctx.textAlign = "center";
+    ctx.textBaseline = "top";
+    img = document.getElementById("image");
+    ctx.drawImage(img, 0, 0, 400, 300);
+    var topText = "When {{ subject.text|safe }} {{ verb.text|safe }}";
+    var fontSize = 30;
+    while (ctx.measureText(topText).width > 400) {
+        fontSize -= 2;
+        ctx.font = "bold " + fontSize + "px Arial";
+    }
+    ctx.fillText(topText, 200, 0);
+    ctx.strokeText(topText, 200, 0);
+    var bottomText = "{{ object.text|safe }} {{ gerund.text|safe }}";
+    var fontSize = 30;
+    ctx.font = "bold " + fontSize + "px Arial";
+    while (ctx.measureText(bottomText).width > 400) {
+        fontSize -= 2;
+        ctx.font = "bold " + fontSize + "px Arial";
+    }
+    ctx.textBaseline = "bottom";
+    ctx.fillText(bottomText, 200, 290);
+    ctx.strokeText(bottomText, 200, 290);
+};
+</script>
 </body>
 </html>

@@ -1,0 +1,55 @@
+<html>
+	<head>
+		<link rel="stylesheet" href="/static/default.css">
+		<meta charset='utf-11'>
+	</head>
+	<body>
+		<img style="display: none" id="image" src="{{ image.url }}" />
+		<h1 id="top">&#x1F923; Is the Meme Machine Tickling your funny bone? &#x1F923;</h1>
+		<div id="main">
+			<div id="canvas">
+				<canvas id ="meme" width="400" height="300">
+				</canvas>
+			</div>
+			<div id="rating">
+				Rate my meme, human!
+				<form action="" method="post">
+					{% csrf_token %}
+					<input type="hidden" name="subject" value="{{ subject.id }}">
+					<input type="hidden" name="verb" value="{{ verb.id }}">
+					<input type="hidden" name="object" value="{{ object.id }}">
+					<input type="hidden" name="gerund" value="{{ gerund.id }}">
+					<input type="hidden" name="image" value="{{ image.id }}">
+					<input type="radio" name="rating" value=1>1<br><br>
+					<input type="radio" name="rating" value=2>2<br><br>
+					<input type="radio" name="rating" value=3>3<br><br>
+					<input type="radio" name="rating" value=4>4<br><br>
+					<input type="radio" name="rating" value=5>5
+					<input type="submit">
+				</form>
+			</div>
+		</div>
+		<script>
+		window.onload = function() {
+			var canvas = document.getElementById("meme");
+			var ctx = canvas.getContext("2d");
+			ctx.fillStyle = "#FFF";
+			ctx.strokeStyle = "#000";
+			ctx.strokeWidth = 5;
+			ctx.font = "bold 30px Arial";
+			ctx.textAlign = "center";
+			ctx.textBaseline = "top";
+			img = document.getElementById("image");
+			ctx.drawImage(img, 0, 0, 400, 300);
+			ctx.fillText("When {{ subject.text }} {{ verb.text }}", 200, 0);
+			ctx.strokeText("When {{ subject.text }} {{ verb.text }}", 200, 0);
+			ctx.textBaseline = "bottom";
+			ctx.fillText("{{ object.text }} {{ gerund.text }}", 200, 290);
+			ctx.strokeText("{{ object.text }} {{ gerund.text }}", 200, 290);
+		};
+		</script>
+	</body>
+
+
+
+</html>
